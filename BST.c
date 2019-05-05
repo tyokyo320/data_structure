@@ -16,8 +16,8 @@ struct BstNode *insert(struct BstNode *root, int data);
 bool Search(struct BstNode *root, int data);
 int min(struct BstNode *root);
 int max(struct BstNode *root);
-struct BstNode* findMin(struct BstNode *root);
-struct BstNode* findMax(struct BstNode *root);
+struct BstNode *findMin(struct BstNode *root);
+struct BstNode *findMax(struct BstNode *root);
 struct BstNode *delete(struct BstNode *root, int data);
 void inorderTreeWalk(struct BstNode *root);
 
@@ -128,14 +128,14 @@ int max(struct BstNode *root)
     return findMax(root->right);
 }
 
-struct BstNode* findMin(struct BstNode *root) 
+struct BstNode *findMin(struct BstNode *root) 
 {
     if (root == NULL) return NULL;
     while (root->left != NULL) root = root->left;
     return root;
 }
 
-struct BstNode* findMax(struct BstNode *root) 
+struct BstNode *findMax(struct BstNode *root) 
 {
     if (root == NULL) return NULL;
     while (root->right != NULL) root = root->right;
