@@ -12,21 +12,25 @@ struct BstNode
 };
 
 struct BstNode *getNewNode(int data);
-struct BstNode *Insert(struct BstNode *root, int data);
+struct BstNode *insert(struct BstNode *root, int data);
 bool Search(struct BstNode *root, int data);
-int findMin(struct BstNode *root);
-int findMax(struct BstNode *root);
+int min(struct BstNode *root);
+int max(struct BstNode *root);
+struct BstNode* findMin(struct BstNode *root);
+struct BstNode* findMax(struct BstNode *root);
+struct BstNode *delete(struct BstNode *root, int data);
+void inorderTreeWalk(struct BstNode *root);
 
 int main(int argc, char const *argv[])
 {
     struct BstNode *root = NULL;    // Creating an empty tree
     
-    root = Insert(root, 15);
-    root = Insert(root, 10);
-    root = Insert(root, 20);
-    root = Insert(root, 25);
-    root = Insert(root, 8);
-    root = Insert(root, 12);
+    root = insert(root, 15);
+    root = insert(root, 10);
+    root = insert(root, 20);
+    root = insert(root, 25);
+    root = insert(root, 8);
+    root = insert(root, 12);
 
     int number;
     printf("Enter number be searched\n");
@@ -41,6 +45,8 @@ int main(int argc, char const *argv[])
     }
     printf("Min number:%d\n", findMin(root));    
     printf("Max number:%d\n", findMax(root));
+    root = delete(root, 12);
+    inorderTreeWalk(root);
 }
 
 struct BstNode *getNewNode(int data)
@@ -51,7 +57,7 @@ struct BstNode *getNewNode(int data)
     return newNode;
 }
 
-struct BstNode *Insert(struct BstNode *root, int data)
+struct BstNode *insert(struct BstNode *root, int data)
 {
     if (root == NULL)
     {
@@ -59,11 +65,11 @@ struct BstNode *Insert(struct BstNode *root, int data)
     }
     else if (data <= root->data)
     {
-        root->left = Insert(root->left, data);
+        root->left = insert(root->left, data);
     }
     else
     {
-        root->right = Insert(root->right, data);
+        root->right = insert(root->right, data);
     }    
     
     return root;
@@ -90,7 +96,7 @@ bool Search(struct BstNode *root, int data)
 }
 
 // iterative
-int findMin(struct BstNode *root)
+int min(struct BstNode *root)
 {
     if (root == NULL)
     {
@@ -106,7 +112,7 @@ int findMin(struct BstNode *root)
 }
 
 // recursion
-int findMax(struct BstNode *root)
+int max(struct BstNode *root)
 {
     if (root == NULL)
     {
@@ -120,4 +126,76 @@ int findMax(struct BstNode *root)
     }
     // Search in right subtree
     return findMax(root->right);
+}
+
+struct BstNode* findMin(struct BstNode *root) 
+{
+    if (root == NULL) return NULL;
+    while (root->left != NULL) root = root->left;
+    return root;
+}
+
+struct BstNode* findMax(struct BstNode *root) 
+{
+    if (root == NULL) return NULL;
+    while (root->right != NULL) root = root->right;
+    return root;
+}
+
+struct BstNode *delete(struct BstNode *root, int data)
+{
+    if (root == NULL)
+    {
+        return root;
+    }
+    else if (data < root->data)
+    {
+        root->left = delete(root->left, data);
+    }
+    else if (data > root->data)
+    {
+        root->right = delete(root->right, data);
+    }
+    else
+    {
+        // Case 1: No child
+        if (root->left == NULL && root->right == NULL)
+        {
+            free(root);
+            root = NULL;
+        }
+        // Case 2: One child
+        else if (root->left == NULL)
+        {
+            struct BstNode *temp = root;
+            root = root->right;
+            free(temp);
+        }
+        else if (root->right == NULL)
+        {
+            struct BstNode *temp = root;
+            root = root->left;
+            free(temp);
+        }
+        // Case 3: 2 children
+        else
+        {
+            struct BstNode *temp = findMin(root->right);
+            root->data = temp->data;
+            root->right = delete(root->right, temp->data);
+        } 
+    }
+    return root;
+    
+}
+
+void inorderTreeWalk(struct BstNode *root)
+{
+    if (root != NULL)
+    {
+        inorderTreeWalk(root->left);
+        printf("%d ", root->data);
+        inorderTreeWalk(root->right);
+    }
+    
 }
