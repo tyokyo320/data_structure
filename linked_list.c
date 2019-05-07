@@ -1,105 +1,174 @@
 #include <stdio.h>
+#include <assert.h>
 #include <stdlib.h>
 
-
-struct Node
+typedef struct Node
 {
     int data;
     struct Node *next;
-};
+} Node;
 
-// Program to create a simple linked
-// list with 3 nodes
-void printLinkedList(struct Node *head)
+
+Node *create(int value);
+void insert_at_begin(Node **head, Node *node);
+void insert_at_end(Node **head, Node *node);
+void insert_at_index(Node **head, Node *node, int index);
+void printLL(Node *head);
+
+void test1()
 {
-    struct Node *temp = head;
-    while(temp != NULL){
-        printf("%d", temp->data);
-        temp = temp->next;
-    }
-    
-    
-    
+    Node *head = NULL;
+
+    insert_at_begin(&head, create(1));
+    insert_at_begin(&head, create(2));
+    insert_at_begin(&head, create(3));
+    insert_at_begin(&head, create(4));
+    insert_at_begin(&head, create(5));
+
+    assert(head->data == 5);
+    assert(head->next->data == 4);
+    assert(head->next->next->data == 3);
+    assert(head->next->next->next->data == 2);
+    assert(head->next->next->next->next->data == 1);
+}
+
+void test2()
+{
+    Node *head = NULL;
+
+    insert_at_end(&head, create(5));
+    insert_at_end(&head, create(4));
+    insert_at_end(&head, create(3));
+    insert_at_end(&head, create(2));
+    insert_at_end(&head, create(1));
+
+    assert(head->data == 5);
+    assert(head->next->data == 4);
+    assert(head->next->next->data == 3);
+    assert(head->next->next->next->data == 2);
+    assert(head->next->next->next->next->data == 1);
+}
+
+void test3()
+{
+    Node *head = NULL;
+
+    insert_at_index(&head, create(3), 30);
+
+    head = create(1);
+    insert_at_index(&head, create(2), 2);
+    insert_at_index(&head, create(2), 20);
+    insert_at_index(&head, create(5), 2);
+
+    assert(head->data == 1);
+    assert(head->next->data == 5);
+    assert(head->next->next->data == 2);
 }
 
 int main(int argc, char const *argv[])
 {
-    // allocate 3 nodes in the heap
-    struct Node *head;
-    struct Node *first = (struct Node *)malloc(sizeof(struct Node));
-    struct Node *second = (struct Node *)malloc(sizeof(struct Node));
-    struct Node *third = (struct Node *)malloc(sizeof(struct Node));
+    // just a pointer
+    // head -> NULL
+    test1();
+    test2();
+    test3();
 
-    head = first;
-    /* Three blocks have been allocated  dynamically.  
-     We have pointers to these three blocks as first, 
-     second and third      
-       first           second           third 
-        |                |               | 
-        |                |               | 
-    +---+-----+     +----+----+     +----+----+ 
-    | #  | #  |     | #  | #  |     |  # |  # | 
-    +---+-----+     +----+----+     +----+----+ 
-     
-    # represents any random value. 
-    Data is random because we haven’t assigned  
-    anything yet  */
 
-    first->data = 1; // assign data in first node
-    first->next = second;    // Link first node with the second node
-
-    /* data has been assigned to data part of first 
-     block (block pointed by head).  And next 
-     pointer of first block points to second.   
-     So they both are linked. 
-  
-       first          second         third 
-        |              |              | 
-        |              |              | 
-    +---+---+     +----+----+     +-----+----+ 
-    | 1  | o----->| #  | #  |     |  #  | #  | 
-    +---+---+     +----+----+     +-----+----+     
-    */
-    
-    second->data = 2;   // assign data to second node 
-    second->next = third;   // Link second node with the third node
-
-    /* data has been assigned to data part of second 
-     block (block pointed by second). And next 
-     pointer of the second block points to third  
-     block. So all three blocks are linked. 
-    
-       first         second         third 
-        |             |             | 
-        |             |             | 
-    +---+---+     +---+---+     +----+----+ 
-    | 1  | o----->| 2 | o-----> |  # |  # | 
-    +---+---+     +---+---+     +----+----+      */
-
-    third->data = 3;
-    third->next = NULL;
-
-    /* data has been assigned to data part of third 
-    block (block pointed by third). And next pointer 
-    of the third block is made NULL to indicate 
-    that the linked list is terminated here. 
-  
-     We have the linked list ready.   
-  
-           first     
-             | 
-             |  
-        +---+---+     +---+---+       +----+------+ 
-        | 1  | o----->|  2  | o-----> |  3 | NULL | 
-        +---+---+     +---+---+       +----+------+        
-     
-      
-    Note that only head is sufficient to represent  
-    the whole list.  We can traverse the complete  
-    list by following next pointers.    */     
-
-    // 1 2 3
-    printLinkedList(head);
-
+    printf("All test Pass!\n");
     return 0;
+}
+
+/**
+ * @param head: pointer to *head
+ * @param node: pointer to  node
+ *
+ */
+void insert_at_begin(Node **head, Node *node)
+{
+    node->next = *head;
+    *head = node;
+}
+
+void insert_at_end(Node **head, Node *node)
+{ 
+    Node *temp = *head;
+    if (temp == NULL)
+    {
+        *head = node;
+        return;
+    }
+
+    while(temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+    temp->next = node;
+}
+
+/**
+ * @param index: 0 <= index
+ *
+ */
+void insert_at_index(Node **head, Node *node, int index)
+{
+    if (index == 0)
+    {
+        node->next = *head;
+        *head = node;
+        return;
+    }
+
+    // head->1->2->NULL;
+    if (*head == NULL)
+    {
+        if (index > 1)
+        {
+            printf("out of range: %d\n", index);
+            return;
+        }
+        else
+        {
+            node->next = *head;
+            *head = node;
+            return;
+        }
+        
+    }
+    else
+    {
+        Node *temp = *head;
+        for (int i = 1; i < index - 1; i++)
+        {
+            temp = temp->next;
+
+            if (temp == NULL)
+            {
+                printf("-out of range: %d\n", index);
+                return;
+            }
+        }
+        node->next = temp->next;
+        temp->next = node;
+    }  
+}
+
+
+Node *create(int value)
+{
+    Node *new_node = (Node *)malloc(sizeof(Node));
+    new_node->data = value;
+    new_node->next = NULL;
+    return new_node;
+}
+
+void printLL(Node *head)
+{
+    Node *temp = head;
+    printf("List is:");
+    while (temp != NULL)
+    {
+        printf(" %d", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
 }
