@@ -13,6 +13,7 @@ Node *create(int value);
 void insert_at_begin(Node **head, Node *node);
 void insert_at_end(Node **head, Node *node);
 void insert_at_index(Node **head, Node *node, int index);
+void deleteNode(Node **head, int key);
 void printLL(Node *head);
 
 void test1()
@@ -65,13 +66,26 @@ void test3()
     assert(head->next->next->data == 2);
 }
 
+void test4()
+{
+    Node *head = NULL;
+
+    insert_at_begin(&head, create(1));
+    insert_at_begin(&head, create(2));
+
+    printLL(head);
+
+}
+
 int main(int argc, char const *argv[])
 {
     // just a pointer
     // head -> NULL
-    test1();
-    test2();
-    test3();
+
+    // test1();
+    // test2();
+    // test3();
+    test4();
 
 
     printf("All test Pass!\n");
@@ -160,6 +174,40 @@ Node *create(int value)
     new_node->next = NULL;
     return new_node;
 }
+
+void deleteNode(Node **head, int key)
+{
+	// store head node
+	Node* temp = *head, *prev;
+
+	// if head node itself holds the keys to be deleted
+	if (temp != NULL && temp->data == key)
+	{
+		*head = temp->next;	// change head
+		free(temp);	// free old head
+		return;
+	}
+
+	// Search for the key to be deleted, keep track of the
+	// previous node as we need to change 'prev->next'
+	while(temp != NULL && temp->data != key)
+	{
+		prev = temp;
+		temp = temp->next;
+	}
+
+	// if key was not present in linked list
+	if (temp == NULL)
+	{
+		return;
+	}
+
+	// unlink the node from linked list
+	prev->next = temp->next;
+
+	free(temp);	// free memory
+}
+
 
 void printLL(Node *head)
 {
