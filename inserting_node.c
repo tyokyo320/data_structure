@@ -2,20 +2,21 @@
 #include <stdlib.h>
 
 // A linked list node
-struct Node{
+struct Node
+{
 	int data;
 	struct Node *next;
 };
 
-void push(struct Node** head_ref, int new_data);
-void insertAfter(struct Node* prev_node, int new_data);
-void append(struct Node** head_ref, int new_data);
+void push(struct Node **head_ref, int new_data);
+void insertAfter(struct Node *prev_node, int new_data);
+void append(struct Node **head_ref, int new_data);
 void printList(struct Node *Node);
 
 int main(int argc, char const *argv[])
 {
 	// start with the empty list
-	struct Node* head = NULL;
+	struct Node *head = NULL;
 
 	// Insert 6. so linked list becomes 6->NULL
 	append(&head, 6);
@@ -35,17 +36,15 @@ int main(int argc, char const *argv[])
 	printf("Created Linked list is:\n");
 	printList(head);
 
-	
-
 	return 0;
 }
 
 /* Given a reference (pointer to pointer) to the head of a list
    and an int, insert a new node on the front of the list. */
-void push(struct Node** head_ref, int new_data)
+void push(struct Node **head_ref, int new_data)
 {
 	// 1. allocate node
-	struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+	struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
 
 	// 2. put in the data
 	new_node->data = new_data;
@@ -59,7 +58,7 @@ void push(struct Node** head_ref, int new_data)
 
 /* Given a node prev_node, insert a new node after the given
    prev_node */
-void insertAfter(struct Node* prev_node, int new_data)
+void insertAfter(struct Node *prev_node, int new_data)
 {
 	// 1. check if the given prev_node is NULL
 	if (prev_node == NULL)
@@ -69,7 +68,7 @@ void insertAfter(struct Node* prev_node, int new_data)
 	}
 
 	// 2. allocate new node
-	struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+	struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
 
 	// 3. put in the data
 	new_node->data = new_data;
@@ -79,15 +78,14 @@ void insertAfter(struct Node* prev_node, int new_data)
 
 	// 5. move the next of prev_node as new_node
 	prev_node->next = new_node;
-
 }
 
 /* Given a reference (pointer to pointer) to the head
    of a list and an int, appends a new node at the end */
-void append(struct Node** head_ref, int new_data)
+void append(struct Node **head_ref, int new_data)
 {
 	// 1. allocate node
-	struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+	struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
 
 	struct Node *last = *head_ref;
 
@@ -106,7 +104,7 @@ void append(struct Node** head_ref, int new_data)
 	}
 
 	// 5. else traverse till the last node
-	while(last->next != NULL)
+	while (last->next != NULL)
 	{
 		last = last->next;
 	}
@@ -119,7 +117,7 @@ void append(struct Node** head_ref, int new_data)
 /* This function prints contents of linked list starting from head */
 void printList(struct Node *node)
 {
-	while(node != NULL)
+	while (node != NULL)
 	{
 		printf("%d\n", node->data);
 		node = node->next;

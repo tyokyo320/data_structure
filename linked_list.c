@@ -8,7 +8,6 @@ typedef struct Node
     struct Node *next;
 } Node;
 
-
 Node *create(int value);
 void insert_at_begin(Node **head, Node *node);
 void insert_at_end(Node **head, Node *node);
@@ -74,7 +73,6 @@ void test4()
     insert_at_begin(&head, create(2));
 
     printLL(head);
-
 }
 
 int main(int argc, char const *argv[])
@@ -86,7 +84,6 @@ int main(int argc, char const *argv[])
     // test2();
     // test3();
     test4();
-
 
     printf("All test Pass!\n");
     return 0;
@@ -104,7 +101,7 @@ void insert_at_begin(Node **head, Node *node)
 }
 
 void insert_at_end(Node **head, Node *node)
-{ 
+{
     Node *temp = *head;
     if (temp == NULL)
     {
@@ -112,7 +109,7 @@ void insert_at_end(Node **head, Node *node)
         return;
     }
 
-    while(temp->next != NULL)
+    while (temp->next != NULL)
     {
         temp = temp->next;
     }
@@ -146,7 +143,6 @@ void insert_at_index(Node **head, Node *node, int index)
             *head = node;
             return;
         }
-        
     }
     else
     {
@@ -163,9 +159,8 @@ void insert_at_index(Node **head, Node *node, int index)
         }
         node->next = temp->next;
         temp->next = node;
-    }  
+    }
 }
-
 
 Node *create(int value)
 {
@@ -177,37 +172,36 @@ Node *create(int value)
 
 void deleteNode(Node **head, int key)
 {
-	// store head node
-	Node* temp = *head, *prev;
+    // store head node
+    Node *temp = *head, *prev;
 
-	// if head node itself holds the keys to be deleted
-	if (temp != NULL && temp->data == key)
-	{
-		*head = temp->next;	// change head
-		free(temp);	// free old head
-		return;
-	}
+    // if head node itself holds the keys to be deleted
+    if (temp != NULL && temp->data == key)
+    {
+        *head = temp->next; // change head
+        free(temp);         // free old head
+        return;
+    }
 
-	// Search for the key to be deleted, keep track of the
-	// previous node as we need to change 'prev->next'
-	while(temp != NULL && temp->data != key)
-	{
-		prev = temp;
-		temp = temp->next;
-	}
+    // Search for the key to be deleted, keep track of the
+    // previous node as we need to change 'prev->next'
+    while (temp != NULL && temp->data != key)
+    {
+        prev = temp;
+        temp = temp->next;
+    }
 
-	// if key was not present in linked list
-	if (temp == NULL)
-	{
-		return;
-	}
+    // if key was not present in linked list
+    if (temp == NULL)
+    {
+        return;
+    }
 
-	// unlink the node from linked list
-	prev->next = temp->next;
+    // unlink the node from linked list
+    prev->next = temp->next;
 
-	free(temp);	// free memory
+    free(temp); // free memory
 }
-
 
 void printLL(Node *head)
 {

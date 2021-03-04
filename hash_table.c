@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct pair{
+struct pair
+{
     int value;
     int key;
     struct pair *next;
@@ -25,14 +26,13 @@ int main(int argc, char const *argv[])
         hash_tabie[j].next = NULL;
         j++;
     }
-    
+
     j = 0;
     while (j < size)
     {
         hash_tabie[j].value = -1;
         j++;
     }
-    
 
     printf("Enter the elements: ");
     for (int i = 0; i < size; i++)
@@ -43,7 +43,7 @@ int main(int argc, char const *argv[])
     }
     printf("\n");
     display(hash_tabie, size);
-    
+
     // search(hash_tabie, size);
     insert(hash_tabie, size);
     display(hash_tabie, size);
@@ -66,7 +66,6 @@ void display(struct pair array[], int size)
         }
         printf("\n");
     }
-    
 }
 
 void search(struct pair array[], int size)
@@ -83,7 +82,6 @@ void search(struct pair array[], int size)
     {
         printf("Element does not exist\n");
     }
-    
 }
 
 void insert(struct pair array[], int size)
@@ -104,5 +102,4 @@ void insert(struct pair array[], int size)
         kvpair->next = NULL;
         array[inp % size].next = kvpair;
     }
-    
 }
