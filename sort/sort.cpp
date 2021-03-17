@@ -84,6 +84,7 @@ void selectionSort(int arr[], int n)
     for (int i = 0; i < n - 1; i++)
     {
         int min_index = i;
+        // 循环查找最小值
         for (int j = i + 1; j < n; j++)
         {
             if (arr[min_index] > arr[j])
