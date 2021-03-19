@@ -6,6 +6,7 @@ void printArray(int arr[], int size);
 void insertSort(int arr[], int n);
 void shellSort(int arr[], int n);
 void selectionSort(int arr[], int n);
+void bubbleSort(int arr[], int n);
 
 int main(int argc, char const *argv[])
 {
@@ -14,7 +15,8 @@ int main(int argc, char const *argv[])
 
     // insertSort(arr, length);
     // shellSort(arr, length);
-    selectionSort(arr, length);
+    // selectionSort(arr, length);
+    bubbleSort(arr, length);
 
     printf("Sorted array: \n");
     printArray(arr, length);
@@ -91,5 +93,19 @@ void selectionSort(int arr[], int n)
                 min_index = j;
         }
         swap(&arr[min_index], &arr[i]);
+    }
+}
+
+// 冒泡排序
+void bubbleSort(int arr[], int n)
+{
+    for (int i = 0; i < n - 1; i++)
+    {
+        // 以后每次循环的次数为arr.length-1-i
+        for (int j = 0; j < n - 1 - i; j++)
+        {
+            if (arr[j] > arr[j + 1])
+                swap(&arr[j], &arr[j + 1]);
+        }
     }
 }
