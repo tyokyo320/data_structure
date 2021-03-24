@@ -7,6 +7,8 @@ void insertSort(int arr[], int n);
 void shellSort(int arr[], int n);
 void selectionSort(int arr[], int n);
 void bubbleSort(int arr[], int n);
+void heapify(int arr[], int n, int i);
+void heapSort(int arr[], int n);
 
 int main(int argc, char const *argv[])
 {
@@ -16,7 +18,8 @@ int main(int argc, char const *argv[])
     // insertSort(arr, length);
     // shellSort(arr, length);
     // selectionSort(arr, length);
-    bubbleSort(arr, length);
+    // bubbleSort(arr, length);
+    heapSort(arr, length);
 
     printf("Sorted array: \n");
     printArray(arr, length);
@@ -107,5 +110,50 @@ void bubbleSort(int arr[], int n)
             if (arr[j] > arr[j + 1])
                 swap(&arr[j], &arr[j + 1]);
         }
+    }
+}
+
+// 构建最大堆
+void heapify(int arr[], int n, int i)
+{
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    // 找出两个子节点中的最大值
+    // 当左节点存在且比根节点大
+    if (left < n && arr[largest] < arr[left])
+        largest = left;
+
+    // 当右节点存在且比根节点大
+    if (right < n && arr[largest] < arr[right])
+        largest = right;
+
+    // 当找出的最大值不是当前父节点对应的值, 那么将父节点和最大值所对应的下标交换
+    // If largest is not root
+    if (largest != i)
+    {
+        swap(&arr[largest], &arr[i]);
+        heapify(arr, n, largest);
+    }
+}
+
+// 堆排序
+void heapSort(int arr[], int n)
+{
+    // 构建最大堆
+    for (int i = n / 2 - 1; i >= 0; i--)
+    {
+        heapify(arr, n, i);
+    }
+
+    // 一对一的将元素从堆中删除
+    for (int i = n - 1; i >= 0; i--)
+    {
+        // 交换现在的根节点到最后
+        swap(&arr[0], &arr[i]);
+        // 重新创建最大堆，确保array[0]是[0, i]中的最大值
+        // 注意这里一定要将顶堆限制在[0, i]的范围内，否则刚抽取出的最大值又被放到最大堆的起始了！
+        heapify(arr, i, 0);
     }
 }
