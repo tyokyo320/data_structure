@@ -9,6 +9,8 @@ void selectionSort(int arr[], int n);
 void bubbleSort(int arr[], int n);
 void heapify(int arr[], int n, int i);
 void heapSort(int arr[], int n);
+int partition(int arr[], int low, int high);
+void quickSort(int arr[], int low, int high);
 
 int main(int argc, char const *argv[])
 {
@@ -19,7 +21,8 @@ int main(int argc, char const *argv[])
     // shellSort(arr, length);
     // selectionSort(arr, length);
     // bubbleSort(arr, length);
-    heapSort(arr, length);
+    // heapSort(arr, length);
+    quickSort(arr, 0, length - 1);
 
     printf("Sorted array: \n");
     printArray(arr, length);
@@ -155,5 +158,41 @@ void heapSort(int arr[], int n)
         // 重新创建最大堆，确保array[0]是[0, i]中的最大值
         // 注意这里一定要将顶堆限制在[0, i]的范围内，否则刚抽取出的最大值又被放到最大堆的起始了！
         heapify(arr, i, 0);
+    }
+}
+
+// 划分函数
+int partition(int arr[], int low, int high)
+{
+    int i = low - 1;
+    int j = high;
+    // 枢纽元素，这里初始选为最后一个
+    int pivot = arr[high];
+
+    // j指向比枢纽小的元素，i指向比枢纽大的元素
+    while (1)
+    {
+        // j遇到比枢纽元素小的元素就停下来，i遇到比枢纽元素大的元素停下来
+        while (arr[++i] < pivot);
+        while (arr[--j] > pivot);
+        if (i < j)
+            swap(&arr[i], &arr[j]);
+        else
+            break;
+    }
+    // 把枢纽元素放到正确的位置
+    swap(&arr[i], &arr[high]);
+    // 返回枢纽的位置
+    return i;
+}
+
+// 快速排序
+void quickSort(int arr[], int low, int high)
+{
+    if (low < high)
+    {
+        int mid = partition(arr, low, high);
+        quickSort(arr, low, mid - 1);
+        quickSort(arr, mid + 1, high);
     }
 }
