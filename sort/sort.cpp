@@ -164,8 +164,8 @@ void heapSort(int arr[], int n)
 // 划分函数
 int partition(int arr[], int low, int high)
 {
-    int i = low - 1;
-    int j = high;
+    int i = low;
+    int j = high - 1;
     // 枢纽元素，这里初始选为最后一个
     int pivot = arr[high];
 
@@ -173,8 +173,11 @@ int partition(int arr[], int low, int high)
     while (1)
     {
         // j遇到比枢纽元素小的元素就停下来，i遇到比枢纽元素大的元素停下来
-        while (arr[++i] < pivot);
-        while (arr[--j] > pivot);
+        while (arr[i] < pivot)
+            i += 1;
+        while (arr[j] > pivot)
+            j -= 1;
+
         if (i < j)
             swap(&arr[i], &arr[j]);
         else
