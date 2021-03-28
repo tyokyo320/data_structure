@@ -11,6 +11,8 @@ void heapify(int arr[], int n, int i);
 void heapSort(int arr[], int n);
 int partition(int arr[], int low, int high);
 void quickSort(int arr[], int low, int high);
+void merge(int arr[], int l, int m, int r);
+void mergeSort(int arr[], int l, int r);
 
 int main(int argc, char const *argv[])
 {
@@ -22,7 +24,8 @@ int main(int argc, char const *argv[])
     // selectionSort(arr, length);
     // bubbleSort(arr, length);
     // heapSort(arr, length);
-    quickSort(arr, 0, length - 1);
+    // quickSort(arr, 0, length - 1);
+    mergeSort(arr, 0, length);
 
     printf("Sorted array: \n");
     printArray(arr, length);
@@ -197,5 +200,75 @@ void quickSort(int arr[], int low, int high)
         int mid = partition(arr, low, high);
         quickSort(arr, low, mid - 1);
         quickSort(arr, mid + 1, high);
+    }
+}
+
+// 合并
+void merge(int arr[], int l, int m, int r)
+{
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 = r - m;
+    // 申请两个辅助数组L，R
+    int L[n1], R[n2];
+
+    // 复制数据至辅助数组L，R中
+    for (i = 0; i < n1; i++)
+    {
+        L[i] = arr[l + i];
+    }
+    for (j = 0; j < n2; j++)
+    {
+        R[j] = arr[m + 1 + j];
+    }
+
+    i = 0;
+    j = 0;
+    k = l;
+
+    // 合并
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
+        {
+            arr[k] = L[i];
+            i += 1;
+        }
+        else
+        {
+            arr[k] = R[j];
+            j += 1;
+        }
+        k += 1;
+    }
+
+    // 若辅助数组L中有剩余
+    while (i < n1)
+    {
+        arr[k] = L[i];
+        i += 1;
+        k += 1;
+    }
+
+    // 若辅助数组R中有剩余
+    while (j < n2)
+    {
+        arr[k] = R[j];
+        j += 1;
+        k += 1;
+    }
+}
+
+// 归并排序
+void mergeSort(int arr[], int l, int r)
+{
+    if (l < r)
+    {
+        // (l+r)/2与一样，这里是为了防止溢出
+        int mid = l + (r - l) / 2;
+
+        mergeSort(arr, l, mid);
+        mergeSort(arr, mid + 1, r);
+        merge(arr, l, mid, r);
     }
 }
