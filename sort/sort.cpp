@@ -1,5 +1,8 @@
 #include <iostream>
 #include <stdio.h>
+#include <algorithm>
+#include <vector>
+using namespace std;
 
 void swap(int *x, int *y);
 void printArray(int arr[], int size);
@@ -13,6 +16,7 @@ int partition(int arr[], int low, int high);
 void quickSort(int arr[], int low, int high);
 void merge(int arr[], int l, int m, int r);
 void mergeSort(int arr[], int l, int r);
+void bucketSort(float arr[], int n);
 
 int main(int argc, char const *argv[])
 {
@@ -26,6 +30,12 @@ int main(int argc, char const *argv[])
     // heapSort(arr, length);
     // quickSort(arr, 0, length - 1);
     // mergeSort(arr, 0, length);
+
+    // float arr[] = {0.897, 0.565, 0.656, 0.1234, 0.665, 0.3434};
+    // bucketSort(arr, length);
+    // cout << "Sorted array is \n";
+    // for (int i = 0; i < length; i++)
+    //     cout << arr[i] << " ";
 
     printf("Sorted array: \n");
     printArray(arr, length);
@@ -271,4 +281,30 @@ void mergeSort(int arr[], int l, int r)
         mergeSort(arr, mid + 1, r);
         merge(arr, l, mid, r);
     }
+}
+
+// 桶排序
+void bucketSort(float arr[], int n)
+{
+
+    // 1) Create n empty buckets
+    vector<float> b[n];
+
+    // 2) Put array elements
+    // in different buckets
+    for (int i = 0; i < n; i++)
+    {
+        int bi = n * arr[i]; // Index in bucket
+        b[bi].push_back(arr[i]);
+    }
+
+    // 3) Sort individual buckets
+    for (int i = 0; i < n; i++)
+        sort(b[i].begin(), b[i].end());
+
+    // 4) Concatenate all buckets into arr[]
+    int index = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < b[i].size(); j++)
+            arr[index++] = b[i][j];
 }
