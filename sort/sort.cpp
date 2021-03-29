@@ -25,7 +25,7 @@ int main(int argc, char const *argv[])
     // bubbleSort(arr, length);
     // heapSort(arr, length);
     // quickSort(arr, 0, length - 1);
-    mergeSort(arr, 0, length);
+    // mergeSort(arr, 0, length);
 
     printf("Sorted array: \n");
     printArray(arr, length);
